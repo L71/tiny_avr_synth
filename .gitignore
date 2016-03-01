@@ -1,6 +1,8 @@
 # ignore these ...
 
 *.o
+*.c~
+*.h~
 
 *.elf
 *.bin

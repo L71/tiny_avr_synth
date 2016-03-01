@@ -1,0 +1,27 @@
+#!/bin/bash
+
+
+# avr-gcc -mmcu=atmega168p -o test2.elf test2.c
+# avr-objcopy -j .text -O ihex test2.elf test2.hex
+
+if [ -z "$1" ]; then 
+	echo "usage: $0 <file.c>"
+	exit 0
+fi
+if [ ! -f ${1}.c ]; then
+	echo "usage: $0 <filename w/o .c extension>"
+	exit 0
+fi
+
+avr-gcc -Wall -O3 -std=gnu99 -mmcu=atmega644p -o ${1}.elf ${1}.c
+RC=$?
+if [ $RC != 0 ]; then
+	echo "Build error: rc=$RC"
+	exit 1
+fi
+
+# avr-objcopy -j .text -O ihex ${1}.elf ${1}.hex
+avr-objcopy -R .eeprom -O ihex ${1}.elf ${1}.hex
+
+ls -l ${1}.*
+
